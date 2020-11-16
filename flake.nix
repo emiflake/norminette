@@ -2,9 +2,8 @@
   description = "norminette client";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.03";
-  inputs.norminette-client.url = "github:codam-coding-college/norminette-client/master";
 
-  outputs = { self, nixpkgs, norminette-client-src }:
+  outputs = { self, nixpkgs }:
     let
       supportedSystems =
         [ "x86_64-linux" "i686-linux" "aarch64-linux" "x86_64-darwin" ];
@@ -14,7 +13,16 @@
 
       packages = forAllSystems (system:
         let
-          drv = nixpkgs.callPackage (import ./gem.nix norminette-client-src) { };
+          pkgs = import nixpkgs { localSystem = system; };
+
+          # Hardcoded magic stuff here.
+          norminette-client-src = pkgs.fetchFromGitHub {
+            owner = "codam-coding-college";
+            repo = "norminette-client";
+            rev = "2db4a9621a1e10808c8d56be07d6ee08a05ac67f";
+            hash = "sha256-VbKtD1AP1mvJJeY7dDiICQHD7g8S2OTZE8zva8sv5tM=";
+          };
+          drv = pkgs.callPackage (import ./gem.nix norminette-client-src) { };
         in { norminette = drv; });
 
       defaultPackage =
