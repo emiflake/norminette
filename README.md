@@ -1,4 +1,6 @@
-# Nix derivations for codam-coding-college/norminette-client
+## Norminette
+
+Nix derivations for codam-coding-college/norminette-client
 
 - Bundles default.nix producing `bin/norminette`
 - Bundles flake.nix with defaultApp norminette.
